@@ -1,0 +1,78 @@
+{% extends 'partials/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div>
+            <canvas id="myChart1"></canvas>
+        </div>
+    </div>
+    <div class="col">
+        <div>
+            <canvas id="myChart2"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Chart 1
+        const ctx1 = document.getElementById('myChart1').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['Intensity', 'Relevance', 'Likelihood'],
+                datasets: [{
+                    label: 'Field Values',
+                    data: [{{ data.intensity }}, {{ data.relevance }}, {{ data.likelihood }}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Chart 2
+        const ctx2 = document.getElementById('myChart2').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: [{% for product in products %} '{{ product.category }}', {% endfor %}],
+                datasets: [{
+                    label: '# of Products',
+                    data: [{% for product in products %} {{ product.num_of_products }}, {% endfor %}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock %}
